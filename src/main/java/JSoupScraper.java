@@ -13,8 +13,8 @@ import java.util.ArrayList;
 
 public class JSoupScraper {
 
-    private static final String urlBase = "www.zoopla.co.uk";
-    private static final String urlPage = "https://www.zoopla.co.uk/for-sale/property/london/croydon/?beds_min=2&page_size=25&price_max=400000&q=croydon&radius=0&results_sort=newest_listings&pn=";
+    private static final String urlBase = "https://www.zoopla.co.uk/";
+    private static final String urlPage = urlBase + "for-sale/property/london/croydon/?beds_min=2&page_size=25&price_max=400000&q=croydon&radius=0&results_sort=newest_listings&pn=";
     private static final String houseClass = "e2uk8e4 css-16zqmgg-StyledLink-Link-FullCardLink e33dvwd0";
     private static final String houseLinkDiv = "div.css-g014tg-ImageCenterWrapper.e2uk8e23";
     private static final String priceClass = "css-18tfumg-Text eczcs4p0";
