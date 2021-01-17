@@ -11,26 +11,29 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+
 public class JSoupScraper {
 
-    private static final String urlBase = "https://www.zoopla.co.uk/";
-    private static final String urlPage = urlBase + "for-sale/property/london/croydon/?beds_min=2&page_size=25&price_max=400000&q=croydon&radius=0&results_sort=newest_listings&pn=";
+    private static final String urlBase = "https://www.zoopla.co.uk/for-sale/property/";
+    private static final String urlPageMidStr = "/?is_shared_ownership=false&page_size=25&q=";
+    private static final String urlPageEndStr = "&radius=0&results_sort=newest_listings&search_source=facets&pn=";
+
     private static final String houseClass = "e2uk8e4 css-16zqmgg-StyledLink-Link-FullCardLink e33dvwd0";
     private static final String houseLinkDiv = "div.css-g014tg-ImageCenterWrapper.e2uk8e23";
     private static final String priceClass = "css-18tfumg-Text eczcs4p0";
 
 
-    public ArrayList<House> extractHouseInfo() throws IOException {
+    private String urlBuilder(String[] city){
+        String countyCity = city[0];
+        String cityOnly = city[1];
+
+        return urlBase + countyCity + urlPageMidStr + cityOnly + urlPageEndStr;
+    }
+
+    private ArrayList<House> extractHouseInfo(String urlPage) throws IOException {
 
         ArrayList<House> houses = new ArrayList<>();
         int pageNum = 0;
-
-        House houseStart = new House();
-        houseStart.setHouse("description");
-        houseStart.setPrice("price");
-        houseStart.setUrl("url");
-        houseStart.setNumBeds("number of beds");
-        houses.add(houseStart);
 
         while(true) {
             pageNum += 1;
@@ -56,7 +59,7 @@ public class JSoupScraper {
                     String urlLink = houseLinkElements.get(i).attr("href");
                     if (house != null && price != null) {
                         houseObj.setHouse(house.text());
-                        houseObj.setPrice(price.text());
+                        houseObj.setPrice(price.text().substring(1));
                         houseObj.setUrl(urlBase + urlLink);
                         houseObj.setNumBeds(numBeds);
                     }
@@ -69,9 +72,9 @@ public class JSoupScraper {
 
     }
 
-    public void csvWriter(ArrayList<House> houseArray) {
+    private void csvWriter(ArrayList<House> houseArray, String city) {
 
-        final String path = "Houses.csv";
+        final String path = city.toUpperCase() + "-Properties-2021" + ".csv";
         String[] columns = new String[] {"house", "price", "url", "numBeds"};
 
         try {
@@ -93,15 +96,36 @@ public class JSoupScraper {
 
     }
 
+
     public static void main(String[] args) throws IOException {
 
+        final String[][] cities = {
+
+                {"london/croydon", "croydon"},
+                {"east-sussex/brighton", "brighton"},
+                {"birmingham", "birmingham"},
+                {"bristol", "bristol"},
+                {"devon/exeter", "exeter"},
+                {"norwich", "norwich"},
+                {"newcastle-upon-tyne", "Newcastle"},
+                {"hull", "hull"},
+                {"west-yorkshire/leeds", "leeds"}
+
+        };
+
         JSoupScraper scraper = new JSoupScraper();
-        ArrayList<House> housesScraped = scraper.extractHouseInfo();
 
-        for (House house: housesScraped){
-            System.out.println(house.getHouse() + " " + house.getPrice() + " " + house.getUrl() + " " + house.getNumBeds());
+        for (String[] city : cities) {
+
+            String url = scraper.urlBuilder(city);
+            ArrayList<House> housesScraped = scraper.extractHouseInfo(url);
+
+            for (House house: housesScraped){
+                System.out.println(house.getHouse() + " " + house.getPrice() + " " + house.getUrl() + " " + house.getNumBeds());
+            }
+
+            scraper.csvWriter(housesScraped, city[1]);
+
         }
-
-        scraper.csvWriter(housesScraped);
     }
 }
