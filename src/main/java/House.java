@@ -3,9 +3,10 @@ import java.io.Serializable;
 public class House implements Serializable {
 
     private String house;
-    private String price;
+    private int price;
     private String url;
-    private String numBeds;
+    private int numBeds;
+    private String borough;
 
     public House(){}
 
@@ -13,7 +14,7 @@ public class House implements Serializable {
         return house;
     }
 
-    public String getPrice(){
+    public int getPrice(){
         return price;
     }
 
@@ -21,15 +22,19 @@ public class House implements Serializable {
         return url;
     }
 
-    public String getNumBeds(){
+    public int getNumBeds(){
         return numBeds;
+    }
+
+    public String getBorough(){
+        return borough;
     }
 
     public void setHouse(String house){
         this.house = house;
     }
 
-    public void setPrice(String price){
+    public void setPrice(int price){
         this.price = price;
     }
 
@@ -37,8 +42,12 @@ public class House implements Serializable {
         this.url = url;
     }
 
-    public void setNumBeds(String numBeds){
+    public void setNumBeds(int numBeds){
         this.numBeds = numBeds;
+    }
+
+    public void setBorough(String borough){
+        this.borough = borough;
     }
 
 }
