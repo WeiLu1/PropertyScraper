@@ -67,7 +67,7 @@ public class JSoupScraper {
                     Element priceRaw = priceElements.get(i);
                     String urlLink = houseLinkElements.get(i).attr("href");
                     if (house != null && priceRaw != null && !priceRaw.text().equals("POA") && !priceRaw.text().equals("Sale by tender")) {
-                        houseObj.setHouse(house.text());
+//                        houseObj.setHouse(house.text());
                         houseObj.setPrice(Integer.parseInt(priceRaw.text().replace(",", "").substring(1)));
                         houseObj.setUrl("https://www.zoopla.co.uk" + urlLink);
                         houseObj.setNumBeds(numBeds);
@@ -85,7 +85,7 @@ public class JSoupScraper {
     private void csvWriter(ArrayList<House> houseArray, String borough) {
 
         final String path = borough.toUpperCase() + "-Properties-2021" + ".csv";
-        String[] columns = new String[] {"house", "price", "url", "numBeds", "borough"};
+        String[] columns = new String[] {"borough", "numBeds", "price", "url"};
 
         try {
             FileWriter writer = new FileWriter(path);
@@ -111,14 +111,14 @@ public class JSoupScraper {
 
         final String[][] boroughs = {
 
-                {"newham-london-borough", "newham-london-borough", "Newham"},
-                {"harrow-london-borough", "harrow-london-borough", "Harrow"},
-                {"sutton-london-borough", "sutton-london-borough", "Sutton"},
-                {"croydon-london-borough", "croydon-london-borough", "Croydon"},
-                {"southwark-london-borough", "southwark-london-borough", "Southwark"},
-                {"greenwich-royal-borough", "greenwich-royal-borough", "Greenwich"},
-                {"kingston-upon-thames-royal-borough", "kingston-upon-thames-royal-borough", "Kingston upon Thames"},
-                {"waltham-forest-london-borough", "waltham-forest-london-borough", "Waltham Forest"},
+//                {"newham-london-borough", "newham-london-borough", "Newham"},
+//                {"harrow-london-borough", "harrow-london-borough", "Harrow"},
+//                {"sutton-london-borough", "sutton-london-borough", "Sutton"},
+//                {"croydon-london-borough", "croydon-london-borough", "Croydon"},
+//                {"southwark-london-borough", "southwark-london-borough", "Southwark"},
+//                {"greenwich-royal-borough", "greenwich-royal-borough", "Greenwich"},
+//                {"kingston-upon-thames-royal-borough", "kingston-upon-thames-royal-borough", "Kingston upon Thames"},
+//                {"waltham-forest-london-borough", "waltham-forest-london-borough", "Waltham Forest"},
                 {"kensington-and-chelsea-royal-borough", "kensington-and-chelsea-royal-borough", "Kensington and Chelsea"},
                 {"ealing-london-borough", "ealing-london-borough", "Ealing"},
                 {"bromley-london-borough", "bromley-london-borough", "Bromley"},
@@ -157,7 +157,7 @@ public class JSoupScraper {
             ArrayList<House> housesScraped = scraper.extractHouseInfo(url, borough[2]);
 
             for (House house: housesScraped){
-                System.out.println(house.getHouse() + ", " + house.getPrice() + ", " + house.getUrl() + ", " + house.getNumBeds() + ", " + house.getBorough());
+                System.out.println(house.getPrice() + ", " + house.getUrl() + ", " + house.getNumBeds() + ", " + house.getBorough());
             }
 
             scraper.csvWriter(housesScraped, borough[2]);
